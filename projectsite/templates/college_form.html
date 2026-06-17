@@ -1,0 +1,175 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block content %}
+<style>
+    /* Fixed Top Spacing Control */
+    .content {
+        padding-top: 2px !important;
+    }
+
+    /* Page Heading Customization */
+    .page-main-title {
+        color: #2b1a17 !important;
+        font-weight: 800;
+        font-size: 1.6rem;
+        margin-top: 5px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Solid Container Card Component */
+    .card-friendly {
+        background: #ffffff;
+        border: 2px solid #e0dbd5 !important;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+    
+    .card-friendly .card-header {
+        background: #fdfbf9;
+        border-bottom: 2px solid #e0dbd5;
+        padding: 20px;
+    }
+
+    .card-friendly .card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2b1a17;
+        margin-bottom: 4px;
+    }
+
+    .card-friendly .card-category {
+        font-size: 0.85rem;
+        color: #7e634e !important;
+        font-weight: 600;
+    }
+
+    /* Clean Form Layout Grid Padding */
+    .form-wrapper-padding {
+        padding: 30px 24px;
+    }
+
+    /* Django Include Form Element Fields Alignment Hooks */
+    /* Sinisiguradong kitang-kita ang text inputs para sa pangalan at code ng kolehiyo */
+    .form-wrapper-padding label {
+        color: #2b1a17 !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .form-wrapper-padding .form-control {
+        background-color: #ffffff !important;
+        border: 2px solid #c2b9b0 !important;
+        color: #1a0f0d !important;
+        border-radius: 8px !important;
+        height: 44px !important;
+        font-weight: 600 !important;
+        padding: 10px 14px !important;
+        margin-bottom: 18px;
+        transition: border-color 0.15s ease-in-out;
+        width: 100%;
+    }
+
+    .form-wrapper-padding .form-control:focus {
+        border-color: #3e2723 !important;
+        box-shadow: 0 0 0 3px rgba(62, 39, 35, 0.1) !important;
+    }
+
+    /* Action Form Layout Controls Buttons Group */
+    .form-actions-group {
+        border-top: 1px solid #eae7e2;
+        padding-top: 22px;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Premium Solid Submit Button */
+    .btn-submit-brand {
+        background-color: #3e2723 !important;
+        border: 2px solid #3e2723 !important;
+        color: #ffffff !important;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px 28px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-submit-brand:hover {
+        background-color: #231513 !important;
+        border-color: #231513 !important;
+        transform: translateY(-1px);
+    }
+
+    /* Accessible Soft Grey Cancel Button */
+    .btn-cancel-friendly {
+        background-color: #f5f2ee !important;
+        border: 2px solid #dcd8d3 !important;
+        color: #4a3b32 !important;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none !important;
+        transition: all 0.15s;
+    }
+
+    .btn-cancel-friendly:hover {
+        background-color: #e6e1da !important;
+        border-color: #c2b9b0 !important;
+        color: #2b1a17 !important;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title page-main-title">
+            <i class="la la-institution mr-2" style="font-weight: bold;"></i>Colleges Directory
+        </h4>
+        
+        <div class="row">
+            <div class="col-md-8 col-lg-7 mx-auto">
+                <div class="card card-friendly">
+                    
+                    <div class="card-header">
+                        <div class="card-title">
+                            {% if object %}
+                                <i class="la la-edit mr-1" style="font-weight: bold; color: #b58226;"></i> Update College Profile
+                            {% else %}
+                                <i class="la la-plus-circle mr-1" style="font-weight: bold; color: #3e2723;"></i> Add New College
+                            {% endif %}
+                        </div>
+                        <div class="card-category">Enter the official name and academic parameters for this institutional department.</div>
+                    </div>
+                    
+                    <div class="card-body form-wrapper-padding">
+                        <form action="" method="post" novalidate>
+                            {% csrf_token %} 
+                            
+                            {% include 'includes/form.html' %}
+                            
+                            <div class="form-actions-group">
+                                <button type="submit" class="btn-submit-brand">
+                                    <i class="la la-check-circle mr-1" style="font-weight: bold;"></i> Save College Entry
+                                </button>
+                                
+                                <a href="{% url 'college-list' %}" class="btn-cancel-friendly">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

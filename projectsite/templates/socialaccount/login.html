@@ -1,0 +1,77 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Confirm Sign In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#3e2723',   // Deep Espresso Brown
+                        brandMedium: '#7e634e', // Rich Warm Brown
+                        brandKhaki: '#c2b29a',  // Classic Khaki
+                        brandLight: '#f7f5f0',  // Soft Cream/Beige
+                    },
+                },
+            },
+        };
+    </script>
+    <link rel="icon" type="image/jpeg" href="{% static 'img/PSU.jpg' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="min-h-screen relative flex items-center justify-center bg-cover bg-center font-sans antialiased px-4 overflow-hidden" 
+      style="background-image: url('{% static 'img/PSU-bg.jpg' %}');">
+
+    <div class="absolute inset-0 bg-stone-900/75 backdrop-blur-[2px]"></div>
+
+    <div class="relative z-10 w-full max-w-md bg-brandLight/95 backdrop-blur-md rounded-3xl py-10 px-8 lg:px-10 flex flex-col items-center justify-center shadow-2xl transition-all duration-300 animate-[popIn_0.3s_ease-out]">
+        
+        <div class="relative mb-4">
+            <img src="{% static 'img/PSU.jpg' %}" alt="PSU Logo" class="w-20 h-20 rounded-full object-cover shadow-xl border-2 border-brandKhaki/40">
+        </div>
+
+        <h4 class="text-brandDark text-2xl font-bold mb-2 text-center">Confirm Sign In</h4>
+        <p class="text-stone-600 text-sm lg:text-base text-center leading-relaxed mb-6">
+            You are about to sign in using your <br>
+            <span class="text-brandDark font-bold font-mono bg-stone-200/60 px-2 py-0.5 rounded text-xs tracking-wide uppercase">{{ provider.name }}</span> account.
+        </p>
+
+        <div class="w-full border-t border-stone-300/70 mb-6"></div>
+
+        <div class="w-full space-y-3">
+            <form method="post" action="" class="w-full m-0">
+                {% csrf_token %}
+                <button type="submit" class="w-full inline-flex items-center justify-center gap-3 rounded-xl bg-brandMedium text-white text-sm font-bold py-3 shadow-lg hover:bg-brandDark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brandMedium transition duration-200">
+                    
+                    {% if 'google' in provider.name.lower or 'google' in provider.id.lower %}
+                        <img src="{% static 'img/google.png' %}" alt="Google" class="w-5 h-5 object-contain block">
+                    {% elif 'github' in provider.name.lower or 'github' in provider.id.lower %}
+                        <img src="{% static 'img/github.png' %}" alt="GitHub" class="w-5 h-5 object-contain block">
+                    {% else %}
+                        <i class="fas fa-sign-in-alt text-sm"></i>
+                    {% endif %}
+                    
+                    <span>Continue with {{ provider.name }}</span>
+                </button>
+            </form>
+
+            <a href="{% url 'account_login' %}" 
+               class="w-full inline-flex justify-center rounded-xl border-2 border-stone-400 text-stone-600 hover:text-brandDark hover:border-brandDark text-sm font-bold py-2.5 bg-transparent hover:bg-stone-50 transition duration-200 text-center">
+                Cancel
+            </a>
+        </div>
+    </div>
+
+    <style>
+        @keyframes popIn {
+            from { transform: scale(0.93); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</body>
+</html>

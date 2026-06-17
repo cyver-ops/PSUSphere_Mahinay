@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+
+    /* Binawasan ang gap sa pinakatuktok ng dashboard content */
+        .content {
+            padding-top: 2px !important; /* Mula sa default na 20px-30px ng theme */
+        }
+
+
+    /* Malalaki at Madidilim na Titulo para sa Mas Madaling Pagbasa */
+    .dashboard-title {
+        color: #2b1a17 !important; /* Mas pinadilim para sa high contrast */
+        font-weight: 800;
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+    }
+    
+    /* Solid at Malinaw na Cards (May Makapal na Borders) */
+    .stat-card-friendly {
+        background: #ffffff;
+        border: 2px solid #e0dbd5 !important; /* Mas makapal na border para hiwalay na hiwalay ang mga kahon */
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease-in-out;
+    }
+    .stat-card-friendly:hover {
+        border-color: #3e2723 !important; /* Umiitim ang border kapag tinapatan ng mouse */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Solid Left Indicators - Malinaw at Hindi Masyadong Mapusyaw */
+    .stat-students { border-left: 6px solid #b58226 !important; }
+    .stat-joined { border-left: 6px solid #4caf50 !important; }
+    .stat-orgs { border-left: 6px solid #e53935 !important; }
+    .stat-programs { border-left: 6px solid #1e88e5 !important; }
+
+    /* Mataas na Contrast para sa mga Teksto sa Loob ng Stats */
+    .stat-card-friendly .card-category {
+        font-size: 0.9rem; /* Pinalaki nang bahagya */
+        color: #4a3b32 !important; /* Pinadilim mula sa dating light gray/brown */
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .stat-card-friendly .card-title {
+        font-size: 2.2rem; /* Mas malaking numero para kitang-kita agad sa isang tingin */
+        font-weight: 800;
+        color: #1a0f0d !important; /* Halos itim na para sa solid readability */
+    }
+
+    /* Icon Containers na Mas Malalaki at May Kulay */
+    .icon-circle {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+    /* Accessible High-Contrast Backgrounds para sa mga Icon */
+    .bg-amber-accent { background: #fff8e1; color: #b58226; border: 1px solid rgba(181,130,38,0.2); }
+    .bg-green-accent { background: #e8f5e9; color: #2e7d32; border: 1px solid rgba(46,125,50,0.2); }
+    .bg-red-accent { background: #ffebee; color: #c62828; border: 1px solid rgba(198,40,40,0.2); }
+    .bg-blue-accent { background: #e3f2fd; color: #1565c0; border: 1px solid rgba(21,101,192,0.2); }
+
+    /* Table at Block Content Container Setup */
+    .card-friendly-container {
+        background: #ffffff;
+        border: 2px solid #e0dbd5 !important;
+        border-radius: 12px;
+    }
+    .card-friendly-container .card-header {
+        background: #fdfbf9; /* Bahagyang may kulay ang header para hiwalay sa puting table body */
+        border-bottom: 2px solid #e0dbd5;
+        padding: 18px 20px;
+    }
+    .card-friendly-container .card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2b1a17;
+    }
+
+    /* Solid Table Headings at Row Lines */
+    .table-friendly th {
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        color: #2b1a17 !important; /* Itim na heading */
+        background-color: #f5f2ee !important;
+        border-bottom: 2px solid #dcd8d3 !important;
+    }
+    .table-friendly td {
+        color: #222222 !important; /* Garantisadong madilim na teksto sa table grid */
+        font-size: 0.95rem;
+        padding: 15px 10px !important;
+        border-bottom: 1px solid #eae7e2 !important;
+    }
+
+    /* Malalaki at Madaling Pindutin na Buttons */
+    .btn-user-friendly {
+        background-color: #3e2723;
+        color: #ffffff !important;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 8px 20px;
+        border: 2px solid #3e2723;
+        transition: all 0.2s;
+    }
+    .btn-user-friendly:hover {
+        background-color: #231513;
+        border-color: #231513;
+    }
+
+    /* Solid Grid Buttons para sa Quick Links */
+    .quick-link-solid {
+        background: #ffffff;
+        border: 2px solid #c2b9b0 !important;
+        color: #2b1a17 !important;
+        border-radius: 10px;
+        padding: 22px 15px !important;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+    .quick-link-solid:hover {
+        background: #3e2723 !important;
+        color: #ffffff !important;
+        border-color: #3e2723 !important;
+    }
+    .quick-link-solid i {
+        color: #5d4037;
+        margin-bottom: 10px;
+    }
+    .quick-link-solid:hover i {
+        color: #ffffff !important;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title dashboard-title"><i class="la la-home mr-2" style="font-weight: bold;"></i>Dashboard Overview</h4>
+        
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card card-stats stat-card-friendly stat-students">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="card-category">Total Students</p>
+                                <h4 class="card-title">{{ total_students }}</h4>
+                            </div>
+                            <div class="icon-circle bg-amber-accent">
+                                <i class="la la-users" style="font-weight: bold;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card card-stats stat-card-friendly stat-joined">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="card-category">Joined This Year</p>
+                                <h4 class="card-title">{{ students_joined_this_year }}</h4>
+                            </div>
+                            <div class="icon-circle bg-green-accent">
+                                <i class="la la-bar-chart" style="font-weight: bold;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card card-stats stat-card-friendly stat-orgs">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="card-category">Organizations</p>
+                                <h4 class="card-title">{{ total_organizations }}</h4>
+                            </div>
+                            <div class="icon-circle bg-red-accent">
+                                <i class="la la-newspaper-o" style="font-weight: bold;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card card-stats stat-card-friendly stat-programs">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="card-category">Active Programs</p>
+                                <h4 class="card-title">{{ total_programs }}</h4>
+                            </div>
+                            <div class="icon-circle bg-blue-accent">
+                                <i class="la la-check-circle" style="font-weight: bold;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-8 mb-4">
+                <div class="card card-friendly-container h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card-title"><i class="la la-clock-o mr-2" style="font-weight: bold; color: #3e2723;"></i>Recently Joined Members</div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-friendly m-0">
+                                <thead>
+                                    <tr>
+                                        <th class="pl-4" style="width: 70px;">#</th>
+                                        <th>Student Full Name</th>
+                                        <th>Assigned Organization</th>
+                                        <th class="pr-4" style="width: 160px;">Registration Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for member in recent_members %}
+                                    <tr style="background-color: #ffffff;">
+                                        <td class="pl-4 font-weight-bold" style="color: #4a3b32;">{{ forloop.counter }}</td>
+                                        <td class="font-weight-bold" style="color: #1a0f0d;">{{ member.student.firstname }} {{ member.student.lastname }}</td>
+                                        <td><strong style="color: #3e2723;">{{ member.organization.name }}</strong></td>
+                                        <td class="pr-4 font-weight-bold" style="color: #4a4a4a;">{{ member.date_joined|date:"M d, Y" }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5 font-weight-bold style-color: #555555;">
+                                            <i class="la la-folder-open d-block mb-2" style="font-size: 30px; color: #7e634e;"></i>
+                                            No member records found matching the criteria.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="background-color: #fdfbf9; border-top: 2px solid #e0dbd5;">
+                        <a href="{% url 'orgmember-list' %}" class="btn btn-user-friendly btn-sm px-4">
+                            View All Members Directory <i class="la la-arrow-right ml-1" style="font-weight: bold;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card card-friendly-container h-100">
+                    <div class="card-header">
+                        <div class="card-title"><i class="la la-star mr-2" style="font-weight: bold; color: #3e2723;"></i>Top Organizations</div>
+                    </div>
+                    <div class="card-body p-3">
+                        <ul class="list-group list-group-flush">
+                            {% for org in top_organizations %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3" style="border-bottom: 1px solid #eae7e2; background: transparent;">
+                                <span class="d-flex align-items-center" style="color: #1a0f0d; font-weight: 700; font-size: 0.95rem;">
+                                    <i class="la la-institution mr-3 text-center" style="font-size: 20px; color: #3e2723; width: 24px; font-weight: bold;"></i>
+                                    {{ org.name }}
+                                </span>
+                                <span class="badge badge-pill px-3 py-2" style="background: #3e2723; color: #ffffff; font-weight: bold; font-size: 0.9rem;">{{ org.member_count }}</span>
+                            </li>
+                            {% empty %}
+                            <li class="list-group-item text-center py-5 font-weight-bold" style="border: none; color: #555555;">
+                                <i class="la la-frown-o d-block mb-2" style="font-size: 30px; color: #7e634e;"></i>
+                                No data found.
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="card-footer" style="background-color: #fdfbf9; border-top: 2px solid #e0dbd5;">
+                        <a href="{% url 'organization-list' %}" class="btn btn-user-friendly btn-sm btn-block text-center">
+                            View All Registered Organizations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2 mb-4">
+            <div class="col-md-12">
+                <div class="card card-friendly-container">
+                    <div class="card-header">
+                        <div class="card-title"><i class="la la-link mr-2" style="font-weight: bold; color: #3e2723;"></i>Quick System Shortcuts</div>
+                    </div>
+                    <div class="card-body p-4" style="background-color: #faf8f5;">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+                                <a href="{% url 'student-list' %}" class="btn quick-link-solid btn-block d-flex flex-column align-items-center justify-content-center">
+                                    <i class="la la-users la-2x" style="font-weight: bold;"></i>
+                                    <span>Students Directory</span>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+                                <a href="{% url 'organization-list' %}" class="btn quick-link-solid btn-block d-flex flex-column align-items-center justify-content-center">
+                                    <i class="la la-institution la-2x" style="font-weight: bold;"></i>
+                                    <span>Organizations Admin</span>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3 mb-sm-0">
+                                <a href="{% url 'program-list' %}" class="btn quick-link-solid btn-block d-flex flex-column align-items-center justify-content-center">
+                                    <i class="la la-book la-2x" style="font-weight: bold;"></i>
+                                    <span>Academic Programs</span>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <a href="{% url 'college-list' %}" class="btn quick-link-solid btn-block d-flex flex-column align-items-center justify-content-center">
+                                    <i class="la la-graduation-cap la-2x" style="font-weight: bold;"></i>
+                                    <span>Colleges Setup</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

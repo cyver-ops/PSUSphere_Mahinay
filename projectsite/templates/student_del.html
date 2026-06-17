@@ -1,0 +1,190 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block content %}
+<style>
+    /* Fixed Top Spacing Control */
+    .content {
+        padding-top: 2px !important;
+    }
+
+    /* Page Heading Customization */
+    .page-main-title {
+        color: #2b1a17 !important;
+        font-weight: 800;
+        font-size: 1.6rem;
+        margin-top: 5px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Solid Container Card Component */
+    .card-friendly {
+        background: #ffffff;
+        border: 2px solid #e0dbd5 !important;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+    
+    .card-friendly .card-header {
+        background: #fdfbf9;
+        border-bottom: 2px solid #e0dbd5;
+        padding: 20px;
+    }
+
+    .card-friendly .card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #c62828; /* Warning red color for critical title */
+        margin-bottom: 4px;
+    }
+
+    .card-friendly .card-category {
+        font-size: 0.85rem;
+        color: #7e634e !important;
+        font-weight: 600;
+    }
+
+    /* Form Body Padding and Alert Wrapper */
+    .delete-wrapper-padding {
+        padding: 30px 24px;
+    }
+
+    /* High-Contrast Warning Callout Box */
+    .warning-callout-box {
+        background-color: #ffebee !important;
+        border: 2px dashed #e53935 !important;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .warning-icon {
+        color: #c62828 !important;
+        font-size: 2.2rem !important;
+        line-height: 1;
+    }
+
+    .warning-text-content {
+        color: #1a0f0d !important;
+        font-size: 1.05rem !important;
+        font-weight: 600;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .target-object-name {
+        color: #c62828 !important;
+        font-weight: 800 !important;
+        background-color: rgba(198, 40, 40, 0.06);
+        padding: 4px 10px;
+        border-radius: 4px;
+        border: 1px solid rgba(198, 40, 40, 0.15);
+        display: inline-block;
+        margin-top: 6px;
+    }
+
+    /* Action Form Layout Controls Buttons Group */
+    .form-actions-group {
+        border-top: 1px solid #eae7e2;
+        padding-top: 22px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Solid High-Contrast Delete Button (Danger) */
+    .btn-delete-solid {
+        background-color: #e53935 !important;
+        border: 2px solid #e53935 !important;
+        color: #ffffff !important;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px 28px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-delete-solid:hover {
+        background-color: #c62828 !important;
+        border-color: #c62828 !important;
+        transform: translateY(-1px);
+    }
+
+    /* Standard Safe Go Back/Cancel Button (Espresso Theme) */
+    .btn-cancel-safe {
+        background-color: #3e2723 !important;
+        border: 2px solid #3e2723 !important;
+        color: #ffffff !important;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none !important;
+        transition: all 0.15s;
+    }
+
+    .btn-cancel-safe:hover {
+        background-color: #231513 !important;
+        border-color: #231513 !important;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title page-main-title">
+            <i class="la la-user mr-2" style="font-weight: bold;"></i>Student Directory
+        </h4>
+        
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto">
+                <div class="card card-friendly">
+                    
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="la la-exclamation-triangle mr-1" style="font-weight: bold;"></i> Delete Student Profile
+                        </div>
+                        <div class="card-category">This will permanently purge the selected student profile from the records database.</div>
+                    </div>
+                    
+                    <div class="card-body delete-wrapper-padding">
+                        <form action="" method="post" novalidate>
+                            {% csrf_token %} 
+                            
+                            <div class="warning-callout-box">
+                                <div class="warning-icon">
+                                    <i class="la la-trash-o" style="font-weight: bold;"></i>
+                                </div>
+                                <div class="warning-text-content">
+                                    Sigurado ka ba na gusto mong burahin ang profile ng estudyanteng ito?<br>
+                                    <span class="target-object-name">{{ object }}</span>
+                                </div>
+                            </div>
+
+                            {% if form.fields %}
+                                {% include 'includes/form.html' %}
+                            {% endif %}
+                            
+                            <div class="form-actions-group">
+                                <button type="submit" class="btn-delete-solid">
+                                    Yes, Delete Permanently
+                                </button>
+                                
+                                <a href="{% url 'student-list' %}" class="btn-cancel-safe">
+                                    No, Keep Student Record
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

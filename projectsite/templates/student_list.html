@@ -1,0 +1,282 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block content %}
+<style>
+    /* Content Top Spacing Fix */
+    .content {
+        padding-top: 2px !important;
+    }
+
+    /* Page Main Title Layout */
+    .page-main-title {
+        color: #2b1a17 !important;
+        font-weight: 800;
+        font-size: 1.6rem;
+        margin-top: 5px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Solid Container Card */
+    .card-friendly {
+        background: #ffffff;
+        border: 2px solid #e0dbd5 !important;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+    
+    .card-friendly .card-header {
+        background: #fdfbf9;
+        border-bottom: 2px solid #e0dbd5;
+        padding: 20px;
+    }
+
+    .card-friendly .card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2b1a17;
+        margin-bottom: 4px;
+    }
+
+    .card-friendly .card-category {
+        font-size: 0.85rem;
+        color: #7e634e !important;
+        font-weight: 600;
+    }
+
+    /* Grid Action Controls Section (Flexbox Alignment) */
+    .table-controls-bar {
+        padding: 20px 20px 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    /* Functional Local Search Styling */
+    .local-search-group {
+        max-width: 320px;
+        width: 100%;
+    }
+    
+    .local-search-group .form-control {
+        background-color: #ffffff !important;
+        border: 2px solid #c2b9b0 !important;
+        color: #1a0f0d !important;
+        border-radius: 8px 0 0 8px !important;
+        height: 42px !important;
+        font-weight: 600;
+        padding-left: 14px;
+    }
+
+    .local-search-group .form-control::placeholder {
+        color: #7e634e !important;
+        opacity: 0.8;
+    }
+
+    .local-search-group .form-control:focus {
+        border-color: #3e2723 !important;
+    }
+
+    .btn-local-search {
+        background-color: #ffffff;
+        border: 2px solid #c2b9b0 !important;
+        border-left: none !important;
+        border-radius: 0 8px 8px 0 !important;
+        color: #3e2723 !important;
+        height: 42px !important;
+        padding: 0 16px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+
+    .local-search-group .form-control:focus + .input-group-append .btn-local-search,
+    .btn-local-search:hover {
+        background-color: #3e2723 !important;
+        border-color: #3e2723 !important;
+        color: #ffffff !important;
+    }
+
+    /* Action Buttons Styles */
+    .btn-add-primary {
+        background-color: #3e2723 !important;
+        border: 2px solid #3e2723 !important;
+        color: #ffffff !important;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+
+    .btn-add-primary:hover {
+        background-color: #231513 !important;
+        border-color: #231513 !important;
+        transform: translateY(-1px);
+    }
+
+    /* Table Grid Visibility Upgrades */
+    .table-friendly th {
+        font-weight: 700 !important;
+        font-size: 0.85rem !important;
+        color: #2b1a17 !important;
+        background-color: #f5f2ee !important;
+        border-bottom: 2px solid #dcd8d3 !important;
+        padding: 14px 15px !important;
+    }
+
+    .table-friendly td {
+        color: #222222 !important;
+        font-size: 0.95rem;
+        padding: 14px 15px !important;
+        vertical-align: middle !important;
+        border-bottom: 1px solid #eae7e2 !important;
+    }
+
+    .student-id-text {
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 700;
+        color: #3e2723;
+        font-size: 0.95rem;
+    }
+
+    .student-name-main {
+        font-weight: 700;
+        color: #1a0f0d;
+    }
+
+    .program-badge {
+        background: #fdfbf9;
+        border: 1px solid #c2b9b0;
+        color: #7e634e;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        display: inline-block;
+    }
+
+    /* Action Grid Row Buttons */
+    .btn-action-edit {
+        background-color: #fff8e1;
+        border: 1px solid #ffb300;
+        color: #b58226 !important;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 6px;
+        margin-right: 4px;
+        transition: all 0.15s;
+    }
+    .btn-action-edit:hover {
+        background-color: #ffb300;
+        color: #ffffff !important;
+    }
+
+    .btn-action-delete {
+        background-color: #ffebee;
+        border: 1px solid #e53935;
+        color: #c62828 !important;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 6px;
+        transition: all 0.15s;
+    }
+    .btn-action-delete:hover {
+        background-color: #e53935;
+        color: #ffffff !important;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title page-main-title">
+            <i class="la la-user mr-2" style="font-weight: bold;"></i>Student Directory
+        </h4>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-friendly">
+                    
+                    <div class="card-header">
+                        <div class="card-title">Master List of Students</div>
+                        <div class="card-category">View, search, profile, or register students currently enrolled in academic programs.</div>
+                    </div>
+                    
+                    <div class="table-controls-bar">
+                        <div class="local-search-group">
+                            <form method="GET" action="{% url 'student-list' %}">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search ID, name, or program..." class="form-control" name="q" value="{{ request.GET.q|default:'' }}" aria-label="Search Students">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn-local-search">
+                                            <i class="la la-search" style="font-weight: bold; font-size: 15px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div>
+                            <a href="{% url 'student-add' %}" class="btn btn-add-primary">
+                                <i class="la la-user-plus mr-1" style="font-weight: bold; font-size: 16px;"></i> Add New Student
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0 mt-2">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-friendly m-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%;">Student ID</th>
+                                        <th style="width: 20%;">Last Name</th>
+                                        <th style="width: 20%;">First Name</th>
+                                        <th style="width: 15%;">Middle Name</th>
+                                        <th style="width: 15%;">Program</th>
+                                        <th style="width: 15%; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for object in object_list %}
+                                    <tr>
+                                        <td class="student-id-text">{{ object.student_id }}</td>
+                                        <td class="student-name-main">{{ object.lastname }}</td>
+                                        <td>{{ object.firstname }}</td>
+                                        <td class="text-muted">{{ object.middlename|default:"--" }}</td>
+                                        <td>
+                                            <span class="program-badge">{{ object.program }}</span>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <a href="student_list/{{ object.id }}" class="btn btn-sm btn-action-edit">
+                                                <i class="la la-edit"></i> Edit
+                                            </a>
+                                            <a href="student_list/{{ object.id }}/delete" class="btn btn-sm btn-action-delete">
+                                                <i class="la la-trash"></i> Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 font-weight-bold" style="color: #555555;">
+                                            <i class="la la-folder-open d-block mb-2" style="font-size: 32px; color: #7e634e;"></i>
+                                            No student records found matching the criteria.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="p-4" style="border-top: 1px solid #eae7e2; background-color: #fdfbf9; border-radius: 0 0 12px 12px;">
+                            {% include 'includes/pagination.html' %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
